@@ -21,7 +21,13 @@ test('it calls onUserAdd when the form is submitted', async () => {
   render(<UserForm onUserAdd={mock} />);
 
   // find the two inputs
-  const [name, email] = screen.getAllByRole('textbox');
+  const name = screen.getByRole('textbox', {
+    // quering using label
+    name: /name/i,
+  });
+  const email = screen.getByRole('textbox', {
+    name: /email/i,
+  });
 
   // simulate typing in a name
   await user.type(name, 'sujay');
@@ -36,7 +42,7 @@ test('it calls onUserAdd when the form is submitted', async () => {
   await user.click(button);
 
   // assertion to make sure onUserAdd gets called with email/name
-  expect(mock).toHaveBeenCalled();
+  expect(mock).toHaveBeenCalled(); // Passes if mockCallback() was called
   expect(mock).toHaveBeenCalledWith({
     name: 'sujay',
     email: 'sujay@email.com',
